@@ -3,17 +3,47 @@ package lib;
 public class PasswordValidator {
 
     /**
-     * คุณจะต้องเขียน Javadoc ที่สมบูรณ์ที่นี่ในอนาคต
-     * เพื่ออธิบายกฎการทำงานของเมธอด
+     * INVALID รหัสผ่านสั้นไปหรือไม่ตรงเงื่อนไข
+     * WEAK    รหัสผ่านมีตัวเล็ก หรือ ใหญ่แต่ไม่มีเลข
+     * MEDIUM  รหัสผ่านมีตัวเล็ก และ ใหญ่แต่ไม่มีเลข
+     * STRONG  รหัสผ่านมีตัวเล็ก และ ใหญ่ และ มีตัวเลข
+     * @param password string รหัสผ่านที่ต้องการตรวจสอบ
+     * @return ระดับความปลอดภัยของรหัสผ่าน
      */
-    // TODO: แก้ไข return type ของเมธอดนี้ให้ถูกต้อง
-    public static void validate(String password) { // Function Type ให้เป็น PasswordStrength 
-        
-        // ส่วนของ Implementation ที่คุณต้องเขียน
-        // ...
-        
-        int minLength = 8 // TODO: มีอะไรขาดหายไปที่บรรทัดนี้?
-        
-        return null ; // TODO: การคืนค่านี้ถูกต้องหรือไม่?
+
+    public static PasswordStrength validate(String password) {
+        int minLength = 8 ;
+        boolean hasLower = false ;
+        boolean hasUpper = false ;
+        boolean hasNumber = false ;
+
+        if (password.length() < minLength) {
+            return PasswordStrength.INVALID ;
+        }
+
+        for (char c : password.toCharArray()) {
+            if (Character.isLowerCase(c))
+                hasLower = true ;
+
+            else if (Character.isUpperCase(c))
+                hasUpper = true ;
+
+            else if (Character.isDigit(c))
+                hasNumber = true ;
+        }
+        if (hasLower && hasUpper && hasNumber) return PasswordStrength.STRONG ;
+
+        if (hasLower && hasUpper) return PasswordStrength.MEDIUM ;
+
+        if (hasLower && hasNumber) return PasswordStrength.MEDIUM ;
+
+        if (hasUpper && hasNumber) return PasswordStrength.MEDIUM ;
+
+        if (hasLower && !hasUpper) return PasswordStrength.WEAK ;
+
+        if (!hasLower && hasUpper) return PasswordStrength.WEAK ;
+
+
+        return PasswordStrength.INVALID ; // TODO: การคืนค่านี้ถูกต้องหรือไม่?
     }
 }
